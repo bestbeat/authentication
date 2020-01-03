@@ -1,0 +1,86 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.2.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+	id 'idea'
+	id "com.ewerk.gradle.plugins.querydsl" version '1.0.10' apply false
+	id 'maven'
+}
+
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'idea'
+	apply plugin: 'maven'
+
+
+    group = 'priv.quqinzhang.authentication'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
+
+    configurations {
+        developmentOnly
+		runtimeClasspath {
+			extendsFrom developmentOnly
+		}
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+		all {
+			exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+		}
+	}
+
+	sourceSets {
+		// 配置 src/main/java 下的源文件来源路径可以有多个来源
+		// src/querydsl/java 是 querydsl 生成的路径
+		// 与 querydsl{ querydslSourcesDir = "src/querydsl/java" } 一致
+		main {
+			java {
+				srcDirs = ['src/main/java', 'src/querydsl/java']
+			}
+		}
+	}
+
+	repositories {
+		mavenLocal()
+		// 国内阿里云镜像，提高速度
+		maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+		mavenCentral()
+	}
+
+}
+
+subprojects {
+
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	// 指定编码格式
+	[compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+
+	// 依赖管理必须使用io.spring.dependency-management插件
+	// 并且之后放在allprojects{} 或者 subprojects{}下才能生效
+	dependencyManagement {
+		dependencies {
+			dependency 'org.projectlombok:lombok:1.18.10'
+			dependency 'com.querydsl:querydsl-jpa:4.2.2'
+			dependency 'com.auth0:java-jwt:3.8.3'
+		}
+	}
+
+	dependencies {
+		compile 'org.projectlombok:lombok'
+		compile 'org.springframework.boot:spring-boot-starter-log4j2'
+		compile 'com.auth0:java-jwt'
+		annotationProcessor 'org.projectlombok:lombok'
+		developmentOnly 'org.springframework.boot:spring-boot-devtools'
+		testImplementation('org.springframework.boot:spring-boot-starter-test') {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		}
+	}
+
+}
+
+test {
+	useJUnitPlatform()
+}

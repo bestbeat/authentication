@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "authentication",
+      "type": "priv.quqinzhang.authentication.ClientProperties",
+      "sourceType": "priv.quqinzhang.authentication.ClientProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "authentication.server-url",
+      "type": "java.lang.String",
+      "sourceType": "priv.quqinzhang.authentication.ClientProperties"
+    },
+    {
+      "name": "authentication.url-patterns",
+      "type": "java.util.Set<java.lang.String>",
+      "sourceType": "priv.quqinzhang.authentication.ClientProperties"
+    }
+  ],
+  "hints": []
+}

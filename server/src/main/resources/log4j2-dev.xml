@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status 日志框架本身日志等级；monitorInterval 自动加载该配置文件周期单位（秒） -->
+<Configuration status="WARN" monitorInterval="7200">
+
+    <Appenders>
+        <!-- 控制台 记录方式 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout charset="UTF-8" pattern="%logger{0} %-5level threadId-%threadId [%t] [%d{yyyy-MM-dd HH:mm:ss.SSS}] -: %msg%n"/>
+        </Console>
+        <!-- 文件 记录方式 -->
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout charset="UTF-8" pattern="%logger{0} %-5level threadId-%threadId [%t] [%d{yyyy-MM-dd HH:mm:ss.SSS}]] -: %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <!-- 日志实例 -->
+    <Loggers>
+        <!-- level 日志等级 additivity 叠加性防止日志向上传递多重输出 -->
+        <Logger name="priv.quqinzhang.authentication" level="INFO" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <!-- 根实例 -->
+        <Root level="DEBUG">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

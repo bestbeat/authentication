@@ -1,0 +1,6 @@
+rootProject.name = 'authentication'
+include 'server'
+include 'client-spring-boot-starter'
+include 'client-spring-boot-starter-autoconfigure'
+include 'common'
+

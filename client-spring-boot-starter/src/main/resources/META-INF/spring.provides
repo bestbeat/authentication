@@ -1,0 +1,3 @@
+provides = client-spring-boot-starter-autoconfigure
+
+// starter 模块中 META-INF/spring-provides 文件下只是用于提供上下文，表示起用途，可以随意填写

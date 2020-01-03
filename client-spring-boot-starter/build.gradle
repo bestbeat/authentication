@@ -1,0 +1,28 @@
+
+dependencies {
+    compile project(':client-spring-boot-starter-autoconfigure')
+}
+
+// 把 clean Task 放置在 apptask 组下
+clean.setGroup('apptask')
+// 获取模块名
+def moduleName = this.name;
+// 建立打包任务
+task makeJar(type:Jar,description:'打包',name:'makeJar',group:'apptask',dependsOn:[clean,processResources]){
+    archivesBaseName = moduleName
+    extension = 'jar'
+    shouldRunAfter = [clean,processResources]
+    from('build/resources/main')
+    destinationDir = file('build/libs')
+}
+
+// 设置安装到本地库任务需要 依赖打包任务后再执行，并把 install Task 放置再 appstask 组下
+install.dependsOn(makeJar).setGroup('apptask')
+//设置执行顺序
+install.shouldRunAfter(makeJar)
+
+// 当模块中引用了其他模块， 在打包后引用的其他模块依赖版本优先级
+// 其他模块内 version 父模块 version 的次序
+
+
+

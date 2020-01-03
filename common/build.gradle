@@ -1,0 +1,21 @@
+// gradle 4.x.x 不设置，编译，库安装时会出现，引用它的模块会找不到该模块中的类
+jar.enabled=true
+
+// 把 clean Task 放置在 apptask 组下
+clean.setGroup('apptask')
+// 获取模块名
+def moduleName = this.name;
+// 建立打包任务
+task makeJar(type:Jar,description:'打包',name:'makeJar',group:'apptask',dependsOn:[clean,compileJava,processResources]){
+    archivesBaseName = moduleName
+    extension = 'jar'
+    shouldRunAfter = [clean,compileJava,processResources]
+    from('build/classes/java/main')
+    from('build/resources/main')
+    destinationDir = file('build/libs')
+}
+
+// 设置安装到本地库任务需要 依赖打包任务后再执行，并把 install Task 放置再 appstask 组下
+install.dependsOn(makeJar).setGroup('apptask')
+//设置执行顺序
+install.shouldRunAfter(makeJar)

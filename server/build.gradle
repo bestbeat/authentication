@@ -1,0 +1,19 @@
+apply plugin: 'com.ewerk.gradle.plugins.querydsl'
+
+// querydsl 配置
+querydsl {
+    // 生成的源文件路径
+    querydslSourcesDir = 'src/querydsl/java'
+    // 整合spring-data-jpa
+    jpa = true
+}
+
+dependencies {
+    compile project(':common')
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'com.querydsl:querydsl-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-data-redis'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'mysql:mysql-connector-java'
+}
+
